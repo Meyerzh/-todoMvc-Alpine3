@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Alpine • TodoMVC</title>
+
+  <!-- <link rel="stylesheet" href="node_modules/todomvc-common/base.css" />
+  <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css" /> -->
+  <link rel="stylesheet" href="public/css/base.css">
+  <link rel="stylesheet" href="public/css/index.css">
+
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app" x-data="todoapp" x-effect="save" x-cloak>
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos - Alpine3</h1>
+        <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?" x-model="newTodo"
+          @keyup.enter="addTodo" />
+      </header>
+      <section class="main" x-show="todos.length">
+        <input id="toggle-all" class="toggle-all" type="checkbox" x-model="allDone" />
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+          <template x-for="todo in filteredTodos" :key="todo.id">
+            <li class="todo" :class="{ completed: todo.completed, editing: todo === editedTodo }">
+              <div class="view">
+                <input class="toggle" type="checkbox" x-model="todo.completed" />
+                <label @dblclick="editTodo(todo)" x-text="todo.title"></label>
+                <button type="button" class="destroy" @click="removeTodo(todo)"></button>
+              </div>
+              <input class="edit" type="text" x-model="todo.title" x-effect="if (todo === editedTodo) $el.focus()"
+                @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.escape="cancelEdit(todo)" />
+            </li>
+          </template>
+        </ul>
+      </section>
+      <footer class="footer" x-show="todos.length">
+        <span class="todo-count">
+          <strong x-text="remaining"></strong>
+          <span x-text="pluralize(remaining)"></span>
+        </span>
+        <ul class="filters">
+          <li>
+            <a href="#/all" :class="{ selected: visibility === 'all' }">All</a>
+          </li>
+          <li>
+            <a href="#/active" :class="{ selected: visibility === 'active' }">Active</a>
+          </li>
+          <li>
+            <a href="#/completed" :class="{ selected: visibility === 'completed' }">Completed</a>
+          </li>
+        </ul>
+        <button type="button" class="clear-completed" @click="removeCompleted" x-show="todos.length > remaining">
+          Clear completed
+        </button>
+      </footer>
+    </section>
+  </div>
+
+  <footer class="info">
+    <p>Double-click to edit a todo</p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  </footer>
+  <!-- <script src="node_modules/todomvc-common/base.js"></script> -->
+  <script src="js/todos.js"></script>
+  <!-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
+  <!-- <script defer src="todomvc-Alpinejs3/node_modules/alpinejs/dist/cdn.js"></script> -->
+  <!-- <script defer src="node_modules/alpinejs/dist/cdn.js"></script> -->
+  <!-- <script defer src="node_modules/alpinejs/dist/cdn.min.js"></script> -->
+  <script defer src="public/js/alpine3.min.js"></script>
+</body>
+
+</html>
